@@ -1,16 +1,29 @@
 /*PROYECTO FAJA SENSADORA DE COLOR*/
 
-/*PROYECTO FAJA SENSADORA DE COLOR*/
+/*Curso: Sistemas Embebidos*/
 
-#include <RBDdimmer.h>                    // Liberia Dimmer
-#include <DallasTemperature.h>            // Liberia Convertidor sensor
-#include <OneWire.h>                      // Liberia Sensor 
-//#include <LiquidCrystal.h>              //Libreria LCD
-#include <Wire.h>                         //Libraria Sensor
-#include <LiquidCrystal_I2C.h>            //Libreria I2C ALCD
-#include <ESP32Servo.h>
+/*Estudiantes:
+ Garcia 
+ Marquina
+ Mendoza
+ Julian
+*/
 
-//LiquidCrystal lcd(22,23,5,18,19,21);  // Define conexion(rs,enable,d4,d5,d6,d7)
+/*Docente: ING. Lenin llanos*/
+
+
+
+/*Codigo*/
+
+/*Librerias*/
+#include <RBDdimmer.h>                    // Liberia Dimmer para controlar el dimmer
+#include <DallasTemperature.h>            // Liberia Convertidor sensor de temperatura
+#include <OneWire.h>                      // Liberia Sensor de temperatura
+#include <Wire.h>                         //Libraria Sensor de Caja
+#include <LiquidCrystal_I2C.h>            //Libreria I2C para el LCD
+#include <ESP32Servo.h>                   //Libreria para controlar los servomotores 
+
+
 
 bool Salir = false;             //variable tipo booleana
 int segundos = 0;
