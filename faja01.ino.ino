@@ -1,4 +1,21 @@
+
+/*,,,,,,,,,,,,,,,,,,,,,,,,,,,:ldkO0KK00Okdl:,,',lxxxxxo;,,:oxxxxxxd:,,,,,,,,,,,,,lxkkkkkkxl,,,,,,,,,,,,,,,,,,,,;okkkkkkkxc,,,,,,,,,,;codkO00KK000Okxoc;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,c
+;,,,,,,,,,,,,,,:cc:;,,,,,,,:ccc;,:cccccc:;,,,,,,,,,,,,;;,,,,,,,,,,,,',,;:clllc:;,,,,,,,,,,,,,,,,,,,;
+;,,,,,,,,,,,,,:ONNO:',,,,';kNN0c;xXNX00KK0xc,,,,,,,,,;xOc,,,,,,,,,,,:ok0KKKKXXX0kl;',,,,,,,,,,,,,,,;
+;,,,,,,,,,,''';kWWk;',,'',,xWWO:,oNM0c;cxXWXo,,,,,,';xNW0c,,,,,,,,;dKNKxlc::clxKWNOl,,,,,,,,,,,,,,';
+;,,,,,,,,,,,,,,xWWx,,,,,,,,dNWk;,oXW0:'';kWWk;,,,'';dXNXWOc,,,,,,:kNNk:,,,,',,,:kNWKl,,,,,,,,,,,,,';
+;,,,,,,,,,,,,',xWWx,,,,,,,,dNWk;,lXW0:',:OWWx;,,,,;dXXolKWO:,,,,,dNW0:,,,,,,,,,,;kWM0:',,,,,,,,,,,';
+;,,,,,,,,,,,,',xWWx,,,,,,,,dNWk;,oXMKocoONXk:,,,,o0XXd;,oXWO:,,,;kWWk;',,,,,,,,,,oXMXl',,,,,,,,,,,';
+;,,,,,,,,,,,,,,xWWx;,,,,,',dNWk;,lXMXOxkxoc,',,,oXWWN0kkOXWWk:,,;xWM0:,,,,,,,,,,,lXMKl,,,,,,,,,,,,';
+;,,,,,,,,,,,,,,dNWO:,,,,,,,xWWk;,lXWO:,,,,,,,,,oKWNKOOOOOOKNNk;',lKWNx;,,,,,,,,,:kWWk;,,,,,,,,,,,,';
+;,,,,,,,,,,,,,,cKWNx:,,,,,lKWWO;,oXWO:,,,,,,,,lKW0dc,,,,,,:kWNk;,,oKWNOl;,,',,;lONNk:,',,,,,,,,,,,';
+;,,,,,,,,,,,,,,,lKWWKkxdxO0XNW0:,dNMKc,,,,,,;oKWNd;,,,,,,,,c0WNk:,,ckXNN0kxdxk0XXOo;,,,,,,,,,,,,,,';
+;,,,,,,,,,,,,,,',:okO00Okdccdkd:;okkxc,,,,,,cxOOx:',,',,,',;oOOkl,'',:oxk0000Oxoc;,,,,,,,,,,,,,,,,';
+*/
+
+
 /*PROYECTO FAJA SENSADORA DE COLOR*/
+
 
 /*Curso: Sistemas Embebidos*/
 
@@ -24,23 +41,28 @@
 #include <ESP32Servo.h>                   //Libreria para controlar los servomotores 
 
 
+/*Variables boleanas*/
+bool Salir = false;                        //variable tipo booleana 
 
-bool Salir = false;             //variable tipo booleana
+
+/*Variables enteros*/
 int segundos = 0;
-int Hornosegundos = 10;       //segundos que debe mantenerse en el horno
+int Hornosegundos = 10;                    //segundos que debe mantenerse en el horno
+/*configuracion de I2C para el LCD*/
+LiquidCrystal_I2C lcd(0x27,16,2);        
 
-LiquidCrystal_I2C lcd(0x27,16,2);
 
-hw_timer_t *My_timer = NULL;      //interrumcion timer
-void IRAM_ATTR onTimer()    //Se llama a esta funcion cada vez que se produce una interrupcion en el timer
+
+hw_timer_t *My_timer = NULL;               //interrumcion timer
+void IRAM_ATTR onTimer()                   //Se llama a esta funcion cada vez que se produce una interrupcion en el timer
 {
- segundos++;    // se incrementa la variable en 1, como el intervalo esta configurado cada segundo, entonces esta variable es un segundero
+ segundos++;                               // se incrementa la variable en 1, como el intervalo esta configurado cada segundo, entonces esta variable es un segundero
 }
 
-//DIMMER
-const int zeroCrossPin  = 25;    //Asignar pin GPIO 25 al paso por cero del dimmer
-const int acdPin  = 26;          //Asignar pin GPIO 26 a potencia del foco
-const int oneWireBus = 5;            // Puerto GPIO 4 Sensor 
+//Configuracion para el DIMMER 
+const int zeroCrossPin  = 25;              //Asignar pin GPIO 25 al paso por cero del dimmer
+const int acdPin  = 26;                    //Asignar pin GPIO 26 a potencia del foco
+const int oneWireBus = 5;                  // Puerto GPIO 4 Sensor 
 
 //TSC3200 Definnir pines de funcionamiento
 #define S0 33    
@@ -57,13 +79,13 @@ int Settemp = 17; //empezar en 17 para que pueda correr el programa al inicio si
 String ecolor;  
 
 //Variables
-int PinHornoSen = 0;
-int Pinvent=13;  
-int Motor=2; 
-int sm1=15;
-int sm2=18;                
-float temp;                           
-float potencia = 17;  //17 se usa como CERO en el dimmer
+int PinHornoSen = 0;             //Para el sensor del horno
+int Pinvent=13;                  //Pin de salida para el ventilador 
+int Motor=2;                     //Pin para poder usar el Contador de pasos del motor
+int sm1=15;                      //Pin para controlar el primer servomotor
+int sm2=18;                      //Pin para controlar el primer servomotor
+float temp;                      //Variable flotante para la temperatura del sensor         
+float potencia = 17;             //17 se usa como CERO en el dimmer
 
 //Objetos
 
