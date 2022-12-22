@@ -1,6 +1,5 @@
 
-/*,,,,,,,,,,,,,,,,,,,,,,,,,,,:ldkO0KK00Okdl:,,',lxxxxxo;,,:oxxxxxxd:,,,,,,,,,,,,,lxkkkkkkxl,,,,,,,,,,,,,,,,,,,,;okkkkkkkxc,,,,,,,,,,;codkO00KK000Okxoc;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,c
-;,,,,,,,,,,,,,,:cc:;,,,,,,,:ccc;,:cccccc:;,,,,,,,,,,,,;;,,,,,,,,,,,,',,;:clllc:;,,,,,,,,,,,,,,,,,,,;
+/*,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ;,,,,,,,,,,,,,:ONNO:',,,,';kNN0c;xXNX00KK0xc,,,,,,,,,;xOc,,,,,,,,,,,:ok0KKKKXXX0kl;',,,,,,,,,,,,,,,;
 ;,,,,,,,,,,''';kWWk;',,'',,xWWO:,oNM0c;cxXWXo,,,,,,';xNW0c,,,,,,,,;dKNKxlc::clxKWNOl,,,,,,,,,,,,,,';
 ;,,,,,,,,,,,,,,xWWx,,,,,,,,dNWk;,oXW0:'';kWWk;,,,'';dXNXWOc,,,,,,:kNNk:,,,,',,,:kNWKl,,,,,,,,,,,,,';
@@ -11,8 +10,8 @@
 ;,,,,,,,,,,,,,,cKWNx:,,,,,lKWWO;,oXWO:,,,,,,,,lKW0dc,,,,,,:kWNk;,,oKWNOl;,,',,;lONNk:,',,,,,,,,,,,';
 ;,,,,,,,,,,,,,,,lKWWKkxdxO0XNW0:,dNMKc,,,,,,;oKWNd;,,,,,,,,c0WNk:,,ckXNN0kxdxk0XXOo;,,,,,,,,,,,,,,';
 ;,,,,,,,,,,,,,,',:okO00Okdccdkd:;okkxc,,,,,,cxOOx:',,',,,',;oOOkl,'',:oxk0000Oxoc;,,,,,,,,,,,,,,,,';
+;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 */
-
 
 /*PROYECTO FAJA SENSADORA DE COLOR*/
 
@@ -20,19 +19,17 @@
 /*Curso: Sistemas Embebidos*/
 
 /*Estudiantes:
- Garcia 
- Marquina
- Mendoza
- Julian
+ Garcia Murrieta, Piero
+ Marquina Laguna, Jose
+ Mendoza Aguilar, Julio
+ Julian Nieto Polo, Harold
 */
 
-/*Docente: ING. Lenin llanos*/
+/*Docente: ING. Lenin Llanos Leon*/
 
+/*Codigo----------------------------------------------------------------------------------*/
 
-
-/*Codigo*/
-
-/*Librerias*/
+/*Librerias-----------------------------------------------*/
 #include <RBDdimmer.h>                    // Liberia Dimmer para controlar el dimmer
 #include <DallasTemperature.h>            // Liberia Convertidor sensor de temperatura
 #include <OneWire.h>                      // Liberia Sensor de temperatura
@@ -40,52 +37,52 @@
 #include <LiquidCrystal_I2C.h>            //Libreria I2C para el LCD
 #include <ESP32Servo.h>                   //Libreria para controlar los servomotores 
 
-
-/*Variables boleanas*/
+/*Variables boleanas-----------------------------------------------*/
 bool Salir = false;                        //variable tipo booleana 
 
-
-/*Variables enteros*/
+/*Variables enteros-----------------------------------------------*/
 int segundos = 0;
 int Hornosegundos = 10;                    //segundos que debe mantenerse en el horno
 /*configuracion de I2C para el LCD*/
 LiquidCrystal_I2C lcd(0x27,16,2);        
 
-
-
+/*Interrupciones-----------------------------------------------*/
 hw_timer_t *My_timer = NULL;               //interrumcion timer
 void IRAM_ATTR onTimer()                   //Se llama a esta funcion cada vez que se produce una interrupcion en el timer
 {
  segundos++;                               // se incrementa la variable en 1, como el intervalo esta configurado cada segundo, entonces esta variable es un segundero
 }
 
-//Configuracion para el DIMMER 
+
+/*Configuracion para el DIMMER-----------------------------------------------*/
 const int zeroCrossPin  = 25;              //Asignar pin GPIO 25 al paso por cero del dimmer
 const int acdPin  = 26;                    //Asignar pin GPIO 26 a potencia del foco
 const int oneWireBus = 5;                  // Puerto GPIO 4 Sensor 
 
-//TSC3200 Definnir pines de funcionamiento
+
+/*TSC3200 sensor de color, pines de funcionamiento-----------------------------------------------*/
 #define S0 33    
 #define S1 27    
 #define S2 14    
 #define S3 12    
 #define OU 4  
 
-//Decalrar variables usadas por el sensor
-int rojo;
-int verde;
-int azul;
-int Settemp = 17; //empezar en 17 para que pueda correr el programa al inicio si no el valor es cero y no funciona
+
+/*Decalrar variables usadas por el sensor-----------------------------------------------*/
+int rojo;                        //entero rojo
+int verde;                       //entero verde
+int azul;                        //entero azul
+int Settemp = 17;                //empezar en 17 para que pueda correr el programa al inicio si no el valor es cero y no funciona
 String ecolor;  
 
-//Variables
-int PinHornoSen = 0;             //Para el sensor del horno
-int Pinvent=13;                  //Pin de salida para el ventilador 
-int Motor=2;                     //Pin para poder usar el Contador de pasos del motor
-int sm1=15;                      //Pin para controlar el primer servomotor
-int sm2=18;                      //Pin para controlar el primer servomotor
-float temp;                      //Variable flotante para la temperatura del sensor         
-float potencia = 17;             //17 se usa como CERO en el dimmer
+/*Variables-----------------------------------------------*/
+int PinHornoSen = 0;               //Para el sensor del horno
+int Pinvent = 13;                  //Pin de salida para el ventilador 
+int Motor = 2;                     //Pin para poder usar el Contador de pasos del motor
+int sm1 = 15;                      //Pin para controlar el primer servomotor
+int sm2 = 18;                      //Pin para controlar el primer servomotor
+float temp;                        //Variable flotante para la temperatura del sensor         
+float potencia = 17;               //17 se usa como CERO en el dimmer
 
 //Objetos
 
@@ -96,8 +93,6 @@ Servo servo1;
 
 //Boleanos
 bool faja = false;
-//bool servo1 = false;
-//bool servo2 = false;
 bool foco = false;
 bool ValMax = false;
 bool pl= false;
@@ -114,7 +109,7 @@ int maxUs = 2400;
 int servo1Pin = 23;
 int servopin1  = 15;
 int servopin2  = 18;
-int pos = 0;      // position in degrees
+int pos = 0;               // posicion en grados 
 
 //Servo myservo;
 int angle = 0;  
@@ -123,7 +118,7 @@ int frequency = 0;
 
 void setup() 
 {
-  //Iniciar comunicacion Serial - Configuraciones iniciales y parametros del LCD, sensor y dimmer
+  /*Iniciar comunicacion Serial - Configuraciones iniciales y parametros del LCD, sensor y dimmer-----------------------------------------------*/
   Serial.begin(115200);
   lcd.init();
   lcd.backlight();
@@ -245,7 +240,7 @@ delay(100);
   {
     Settemp = lectcol();    //Se guarda el valor correspondiente a cada color
     temp = LeerTemperatura();
-    // Aqui mostrar LCD y Serial
+    /* Aqui imprime el LCD y Serial */
     imprimir();
   }
 
@@ -254,8 +249,8 @@ delay(100);
 
   while (!Salir)
   {         
-      temp = LeerTemperatura();    //Se guarda e valor del sensor de temperatura
-      potencia = (1-temp/Settemp)*700; //900
+      temp = LeerTemperatura();          //Se guarda e valor del sensor de temperatura
+      potencia = (1-temp/Settemp)*700;   //900
       //Estableciendo limites aduados para el funcionamiento del modulo dimmer
       if (potencia > 93) 
       {
@@ -331,25 +326,26 @@ delay(100);
           }
 
           //if (Senhorno)
-          if (!digitalRead(PinHornoSen))  //¿ya llego al sensor del honro?
+          if (!digitalRead(PinHornoSen))         //¿ya llego al sensor del honro?
           {
             digitalWrite(Motor,HIGH);
             if (!timerON)
             {
               timerON = true;
-              segundos = 0;  //Reiniciar el contador de segundos
+              segundos = 0;                      //Reiniciar el contador de segundos
             }else
             {
-              if (segundos == Hornosegundos)  //comparar si ya se cumplieron los segundos solicitados
+              if (segundos == Hornosegundos)     //comparar si ya se cumplieron los segundos solicitados
               {
-                Salir = true; // y salir de Bucle porque se termino el proceso de horno
+                Salir = true;                    // y salir de Bucle porque se termino el proceso de horno
               }
             }
           }
         }
 	    }
-  }   // Fin del loop de la bandera [Salir]
+  }     /*------------>*/                        // Fin del loop de la bandera [Salir]
 
+/*Configuracion para LCD, para que nos muestr el estado de la Faja*/
 digitalWrite(Motor,LOW);
 lcd.clear();  
 lcd.setCursor(0, 0);
@@ -390,7 +386,8 @@ switch (Settemp)
 }
 
 //==================================================
-  float LeerTemperatura()       //Subrutina  Leer temperatura
+/*Subrutina  Leer temperatura*/
+  float LeerTemperatura()       
   {
     sensors.requestTemperatures();
     float temperatureC = sensors.getTempCByIndex(0);
@@ -420,20 +417,20 @@ switch (Settemp)
 
 
 
-
-  int lectcol()     //Subrutina Leer color
+/*Subrutina Leer color*/
+  int lectcol()                
   {
     digitalWrite(S2,LOW);     // Establece fotodiodos
     digitalWrite(S3,LOW);     // Con filtro rojo
     delay(20); 
     rojo = pulseIn(OU, LOW); // Obtiene duracion de pulso de salida del sensor
-    delay(20);       // Demora de 200 mseg
+    delay(20);               // Demora de 200 mseg
     
     digitalWrite(S2,HIGH);    // Establece fotodiodos
     digitalWrite(S3,HIGH);    // Con filtro verde
     delay(20); 
     verde = pulseIn(OU, LOW);  // Obtiene duracion de pulso de salida del sensor
-    delay(20);       // Demora de 200 mseg
+    delay(20);                 // Demora de 200 mseg
     
     digitalWrite(S2,LOW);     // Establece fotodiodos
     digitalWrite(S3,HIGH);    // Con filtro azul
@@ -442,7 +439,7 @@ switch (Settemp)
     delay(20);               // Demora de 200 mseg
     
       //Rojo
-  //  if ( rojo< verde && verde> azul && rojo>102 && rojo<152 && verde>210 && verde<260 && azul>150 && azul<210){   // si valores dentro del rango
+      //  if ( rojo< verde && verde> azul && rojo>102 && rojo<152 && verde>210 && verde<260 && azul>150 && azul<210){   // si valores dentro del rango
       //if ( 56<rojo<76 && 155<verde<175 && 103<azul<123){   // si valores dentro del rango
     if (rojo > 70 && rojo < 100 ){ 
       Serial.println("Rojo");       // Muestra texto en serial monitor
